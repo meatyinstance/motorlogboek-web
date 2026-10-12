@@ -87,14 +87,19 @@ function wRow(w,del){const c=w.left<=0?'bad':w.left<=Math.max(500,w.every*.1)?'w
  return `<div class="w ${c}"><b>${tx}</b>${del?`<span style="white-space:nowrap"><button class="x" onclick="edit('sched','${w.id}')">✎</button> <button class="x" onclick="del('sched','${w.id}')">${pend==='sched'+w.id?'Zeker?':'✕'}</button></span>`:`<span class="mut">elke ${fm(w.every)}</span>`}</div>`}
 const TPL=[['Brandstofleiding','I',12000],['Gashandvat','I',12000],['Luchtfilter','I',18000],['Carterontluchting','C',6000],['Bougies','I',12000],['Bougies','R',24000],['Kleppenspeling','I',24000],['Motorolie','R',12000],['Oliefilter','R',12000],['Koelvloeistof','I',12000],['Koelvloeistof','R',36000],['Koelsysteem','I',12000],['Secundair luchtsysteem','I',12000],['Ketting','L',1000],['Kettingslider','I',12000],['Remvloeistof','I',6000],['Remvloeistof','R',18000],['Remblokslijtage','I',6000],['Remsysteem','I',12000],['Remlichtschakelaar','I',12000],['Koplampafstelling','I',12000],['Koppeling','I',6000],['Zijstandaard','I',12000],['Vering','I',12000],['Bouten en moeren','I',12000],['Wielen en banden','I',12000],['Balhoofdlager','I',12000]];
 const TPK=[['Motorolie','R',10000],['Oliefilter','R',10000],['Kleppenspeling','I',20000],['Bougies','I',10000],['Bougies','R',20000],['Luchtfilter','R',20000],['Brandstoffilter','R',40000],['Remvloeistof','R',20000],['Koelvloeistof','R',40000],['Cardanolie','R',20000],['Cardanas-vertanding','L',20000],['Versnellingsbakolie','R',40000],['Remblokslijtage','I',10000]];
-const TYPES=[...new Set([...TPL,...TPK].map(x=>x[0])),'Accu','APK / keuring','Anders'];
+const SCHEMAS=[
+{n:'BMW K75RT',d:'Eigen lijst',i:[['Motorolie','I',1000],['Bandenspanning','I',1000],['Oliefilter','R',10000],['Motorolie','R',10000],['Koelvloeistof','I',20000],['Luchtfilter','R',20000],['Kleppen','I',20000],['Bougies','I',5000],['Bougies','R',20000],['Koppelingskabel','L',10000],['Zijstandaardkabel','L',10000],['Cardanolie','R',20000],['Versnellingsbakolie','R',20000],['Cardansmering','I',20000],['Snelheidssensor','C',20000],['Remvloeistof','I',5000],['Remvloeistof','R',20000],['Banden','I',5000],['Remblokjes','I',5000],['Balhoofdlagers','I',20000],['Brandstoffilter','R',40000],['Kunststofgeleiders distributieketting','R',60000]]},
+{n:'Honda CBF600S',d:'Eigen lijst',i:[['Luchtfilter','I',18000],['Bougies','I',12000],['Bougies','R',24000],['Klepspeling','I',24000],['Motorolie','R',12000],['Oliefilter','R',12000],['Koelvloeistof','I',12000],['Koelvloeistof','R',36000],['Ketting (speling)','I',1000],['Ketting','L',1000],['Remvloeistof','I',6000],['Remvloeistof','R',18000],['Balhoofdlager','I',12000],['Vering','I',12000]]},
+{n:'Suzuki GS450L',d:'Eigen lijst',i:[['Carburateurs','C',10000],['Carburateurs','A',5000],['Kleppen','A',5000],['Bougies','R',10000],['Voorvorkolie','R',10000],['Oliefilter','R',5000],['Motorolie','R',5000],['Balhoofdlagers','L',20000],['Banden','I',500],['Oliepeil','I',500],['Ketting','L',500],['Achterketting','A',1000],['Remvloeistofpeil','I',1000],['Remblokjes','I',1000],['Bedieningskabels','L',3000],['Ketting (demonteren en smeren)','L',3000],['Algemene smeerbeurt','L',3000],['Luchtfilter','C',3000],['Bougies (reinigen en afstellen)','A',5000],['Ontsteking','A',5000],['Oliedruk','I',5000],['Kabels','A',5000],['Pedaalas, remnokas en achterrem','L',5000],['Balhoofdlagers','A',5000],['Remschijf','I',5000],['Oliezeef','C',10000],['Instrumentkabels','L',10000],['Remvloeistof','R',10000],['Contactpunten','R',10000],['Wiellagers','I',10000],['Benzineslangen','R',20000],['Remslang','R',20000],['Achtervorklagers','L',20000]]},
+{n:'Suzuki GS500',d:'Eigen lijst',i:[['Remvloeistofpeil','I',1000],['Bedieningskabels','L',3000],['Cylinderkop en uitlaat vastdraaien (sectie 4)','A',6000],['Algemene smeerbeurt','L',6000],['Kleppen (sectie 5)','A',6000],['Stationair toerental (sectie 9)','A',6000],['Brandstofleiding en systeem (sectie 7)','I',6000],['Koppeling (sectie 10)','I',6000],['Ketting (sectie 11)','A',6000],['Remvloeistofsysteem','I',6000],['Balhoofdlagers (sectie 16)','L',6000],['Oliezeef','C',10000],['Contactpunten','R',10000],['Wiellagers','I',10000],['Voorvork (sectie 20)','I',12000],['Remblokjes (sectie 13)','I',6000],['Benzineslangen','R',20000],['Remslang','R',20000],['Achtervorklagers','L',20000],['Instrumentkabels','L',10000],['Bougies reinigen en afstellen (sectie 6)','A',6000],['Motorolie en filter (sectie 8)','R',6000],['Bouten (sectie 17)','I',6000],['Remvloeistof','R',10000],['Luchtfilter','R',12000],['Bougies','R',12000],['Voorvorkolie','R',10000],['Achterketting','A',1000],['Banden','I',1000],['Oliepeil','I',1000],['Ketting','L',1000],['Balhoofdlagers','L',20000]]}];
+const TYPES=[...new Set([...TPL,...TPK,...SCHEMAS.flatMap(x=>x.i)].map(x=>x[0])),'Accu','APK / keuring','Anders'];
 const dl=`<datalist id="tp">${TYPES.map(t=>`<option value="${t}">`).join('')}</datalist>`;
 
 const V={
 home(){const b=bike();
  if(!b)return `<div class="card"><h2>Welkom! Voeg je eerste motor toe</h2><input id="nn" placeholder="Bijv. Honda CB500F"><button class="red" onclick="addBike('nn')">Motor toevoegen</button></div>`;
  const k=curKm(b.id),w=warns(b.id).slice(0,4);
- return `${bkBanner()}<div class="card"><label style="margin-top:0">Welke motor?</label>
+ return `<div class="card"><label style="margin-top:0">Welke motor?</label>
  <select onchange="D.sel=this.value;save();render()">${D.bikes.map(m=>`<option value="${m.id}" ${m.id===b.id?'selected':''}>${esc(m.name)}</option>`).join('')}</select>
  <div class="mut" style="margin-top:10px">Laatst bekende stand</div><div class="big">${k?fm(k)+' km':'– km'}</div></div>
  <div class="card"><h2>⛽ Tanken</h2>
@@ -117,7 +122,8 @@ sched(){const b=bike();if(!b)return nobike();const w=warns(b.id);
  <label style="margin-top:0">Type onderhoud</label><input id="st" list="tp" placeholder="Bijv. Motorolie"><label>Actie</label><select id="sa">${actOpts}</select>
  <label>Elke hoeveel km?</label><input id="se" inputmode="decimal" placeholder="10000">
  <label>Voor het laatst gedaan bij km (leeg = nu)</label><input id="ss" inputmode="decimal" placeholder="${curKm(b.id)||0}">
- <button class="red" onclick="saveSched()">Toevoegen aan schema</button></div>`},
+ <button class="red" onclick="saveSched()">Toevoegen aan schema</button></div>
+ <div class="card"><h2>📥 Schema importeren</h2><input id="sq" type="search" placeholder="Zoek een schema, bijv. K75" oninput="schQ()" value="${esc(SQ)}" style="font-size:15px;padding:9px"><div id="sr" style="margin-top:6px">${schList(SQ)}</div></div>`},
 stats(){const b=bike();if(!b)return nobike();const t=tanks(b.id),F=D.fuel.filter(f=>f.b===b.id),M=D.maint.filter(m=>m.b===b.id);
  const fc=F.reduce((a,f)=>a+f.l*f.p,0),mc=M.reduce((a,m)=>a+m.c,0)+D.tires.filter(t=>t.b===b.id).reduce((a,t)=>a+t.c,0),tl=F.reduce((a,f)=>a+f.l,0);
  const cs=t.filter(x=>x.c),dist=cs.reduce((a,x)=>a+x.d,0),avg=dist?cs.reduce((a,x)=>a+x.l,0)/dist*100:0;
@@ -157,6 +163,16 @@ tires(){const b=bike();if(!b)return nobike();const k=curKm(b.id);
  <label>Prijs (€)</label><input id="tcost" inputmode="decimal" placeholder="0,00">
  <div class="mut" style="margin-top:6px">Een actieve band op dezelfde positie wordt automatisch afgemonteerd.</div>
  <button class="red" onclick="addTire()">Band opslaan</button></div>`},
+schimp(){const b=bike();if(!b||!IMP)return nobike();const S=SCHEMAS[IMP.s],k=curKm(b.id);
+ if(IMP.i>=S.i.length)return `<div class="card"><h2>✅ Klaar met importeren</h2><p>${IMP.n} overgenomen, ${IMP.k} overgeslagen.</p><button class="red" onclick="go('sched')">Naar mijn schema</button></div>`;
+ const [t,a,e]=S.i[IMP.i],ex=D.sched.find(x=>x.b===b.id&&x.t===t&&x.a===a);
+ return `<div class="card"><div class="mut">${esc(S.n)} · onderdeel ${IMP.i+1} van ${S.i.length}</div>
+ <div class="big" style="font-size:24px;margin:8px 0"><span class="tg ${a}">${ACT[a]}</span>${esc(t)}</div>
+ ${ex?`<div class="mut">Staat al in je schema (elke ${fm(ex.every)} km). Overnemen vervangt dit.</div>`:''}
+ <label>Elke hoeveel km?</label><input id="ie" inputmode="decimal" value="${e}">
+ <label>Voor het laatst gedaan bij km (leeg = onbekend)</label><input id="ik" inputmode="decimal" placeholder="${k||''}">
+ <button class="red" onclick="impNext(1)">✔ Overnemen</button><button class="blue" onclick="impNext(0)">Overslaan →</button>
+ <button class="x" style="width:100%;margin-top:10px;padding:10px" onclick="go('sched')">Stoppen met importeren</button></div>`},
 more(){return `<div class="grid" style="grid-template-columns:1fr">
  <button class="blue" onclick="go('overview')">🧾 Onderhoudsoverzicht (voor verkoop)</button>
  <button class="blue" onclick="go('sched')">📅 Onderhoudsschema</button>
@@ -177,7 +193,7 @@ backup(){return `<div class="card"><h2>💾 Back-up</h2><p class="mut">Je gegeve
  <div class="card"><h2>Terugzetten</h2><textarea id="im" placeholder="Plak hier je back-up"></textarea><label>Of kies een back-upbestand</label><input type="file" accept=".json,application/json,text/plain" onchange="impFile(this)"><button class="red" onclick="imp()">Terugzetten</button></div>`}
 };
 const nobike=()=>`<div class="card"><p>Voeg eerst een motor toe.</p><button class="red" onclick="go('bikes')">Naar mijn motoren</button></div>`;
-const PARENT={overview:'more',sched:'more',hist:'more',bikes:'more',backup:'more'};
+const PARENT={schimp:'sched',overview:'more',sched:'more',hist:'more',bikes:'more',backup:'more'};
 const dt=d=>d.split('-').reverse().join('-');let EDT=null;
 function ovList(id){const L=D.maint.filter(m=>m.b===id).map(m=>({km:m.km,d:m.d,t:m.t,a:m.a,c:m.c}));
  D.tires.filter(t=>t.b===id).forEach(t=>{L.push({km:t.start,t:'Band '+(t.p==='V'?'voor':'achter')+' gemonteerd: '+t.n,c:t.c});if(t.end!=null)L.push({km:t.end,t:'Band '+(t.p==='V'?'voor':'achter')+' afgemonteerd: '+t.n+' ('+fm(t.end-t.start)+' km gereden)',c:0})});
@@ -186,7 +202,7 @@ const real=x=>x.m===1||(x.m===undefined&&x.tp===undefined&&!(TPL.concat(TPK).som
 function ovText(b){const L=ovList(b.id);let t=`ONDERHOUDSHISTORIE ${b.name}\nKilometerstand: ${fm(curKm(b.id))} km\n`;
  [...new Set(L.map(x=>x.km))].sort((x,y)=>y-x).forEach(km=>{const d=L.find(x=>x.km===km&&x.d)?.d;t+=`\n${fm(km)} km${d?' ('+dt(d)+')':''}\n`;L.filter(x=>x.km===km).forEach(x=>{t+=`- ${x.a?ACT[x.a]+': ':''}${x.t}${x.n?' (bij aankoop)':''}${x.c?' (€ '+fm(x.c,2)+')':''}\n`})});
  return t+`\nTotaal onderhoudskosten: € ${fm(L.reduce((a,x)=>a+x.c,0),2)}`}
-const NAMES={more:'Meer',overview:'Onderhoudsoverzicht',tires:'Bandenlog',home:'🏍️ Motor Logboek',maint:'Onderhoud',sched:'Schema',stats:'Statistieken',hist:'Geschiedenis',bikes:'Motoren',backup:'Back-up'};
+const NAMES={schimp:'Schema importeren',more:'Meer',overview:'Onderhoudsoverzicht',tires:'Bandenlog',home:'🏍️ Motor Logboek',maint:'Onderhoud',sched:'Schema',stats:'Statistieken',hist:'Geschiedenis',bikes:'Motoren',backup:'Back-up'};
 function render(){pend=pend;$('#app').innerHTML=V[view]();$('#ht').textContent=NAMES[view];$('#back').style.display=view==='home'?'none':'block';$('#back').onclick=()=>go(PARENT[view]||'home')}
 function go(v){view=v;pend='';EDT=null;render();scrollTo(0,0)}
 function tot(){const l=num($('#l').value),p=num($('#p').value);$('#tot').innerHTML=l>0&&p>0?`Totaal: <b>€ ${fm(l*p,2)}</b>`:'&nbsp;'}
@@ -258,6 +274,19 @@ async function shareBk(){const t=JSON.stringify(D),n='motorlogboek-backup-'+toda
  try{if(navigator.share){await navigator.share({title:'Motor Logboek back-up',text:t});mark();return toast('Back-up gedeeld')}}catch(e){if(e&&e.name==='AbortError')return}
  cp()}
 function impFile(i){const f=i.files[0];if(!f)return;f.text().then(t=>{$('#im').value=t;toast('Bestand gelezen. Druk op Terugzetten.')})}
+let IMP=null,SQ='';
+function schList(q){q=q.trim().toLowerCase();const L=SCHEMAS.filter(s=>(s.n+' '+s.d).toLowerCase().includes(q));
+ return L.length?L.map(s=>`<div class="it"><div><b>${esc(s.n)}</b><div class="mut">${s.i.length} onderdelen · ${esc(s.d)}</div></div><button class="blue" style="width:auto;margin:0;padding:10px 14px;font-size:15px" onclick="impStart(${SCHEMAS.indexOf(s)})">Importeren</button></div>`).join(''):'<p class="mut">Geen schema gevonden.</p>'}
+function schQ(){SQ=$('#sq').value;$('#sr').innerHTML=schList(SQ)}
+function impStart(i){IMP={s:i,i:0,n:0,k:0};go('schimp')}
+function impNext(take){const b=bike(),S=SCHEMAS[IMP.s],[t,a]=S.i[IMP.i];
+ if(take){const e=num($('#ie').value),kv=$('#ik').value.trim(),k=curKm(b.id),lk=kv===''?null:num(kv);
+  if(!(e>0))return toast('Vul een geldig aantal km in');
+  if(lk!==null&&!(lk>=0))return toast('Vul een geldige kilometerstand in');
+  D.sched=D.sched.filter(x=>!(x.b===b.id&&x.t===t&&x.a===a));
+  D.sched.push({id:uid(),b:b.id,t,a,every:e,start:lk!==null?lk:Math.floor(k/e)*e,m:lk!==null?1:0});save();IMP.n++}
+ else IMP.k++;
+ IMP.i++;render();scrollTo(0,0)}
 function cp(id='ex'){if(id==='ex')mark();const e=$('#'+id);e.select();try{navigator.clipboard.writeText(e.value);toast('Gekopieerd')}catch(x){try{document.execCommand('copy');toast('Gekopieerd')}catch(y){toast('Kopieer de tekst handmatig')}}}
 function imp(){try{const d=JSON.parse($('#im').value);if(!d.bikes||!d.fuel)throw 0;D=d;D.tires=D.tires||[];D.sched=D.sched||[];D.maint=D.maint||[];save();mark();toast('Teruggezet');go('home')}catch(e){toast('Dit is geen geldige back-up')}}
 if(!D.sel&&D.bikes[0])D.sel=D.bikes[0].id;applyTheme();
