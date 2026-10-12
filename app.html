@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="nl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Motor Logboek</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--red:#d6001c;--blue:#0b2f7a;--bg:#f1f3f8;--card:#fff;--tx:#14181f;--mut:#667085;--bd:#d9dee8;--ok:#1a7f37}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1118;--card:#1a1f2b;--tx:#eef1f6;--mut:#9aa3b5;--bd:#2c3445;--blue:#2f5fc4;--ok:#3fb950}}
+:root[data-theme="dark"]{--bg:#0e1118;--card:#1a1f2b;--tx:#eef1f6;--mut:#9aa3b5;--bd:#2c3445;--blue:#2f5fc4;--ok:#3fb950}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{background:var(--red);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:5px solid var(--blue)}
+header h1{margin:0;font-size:20px;letter-spacing:.5px;flex:1}
+header button{background:rgba(255,255,255,.2);color:#fff;border:0;border-radius:8px;padding:8px 12px;font-size:15px}
+main{max-width:560px;margin:0 auto;padding:14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:14px}
+h2{margin:0 0 10px;font-size:17px;color:var(--blue)}
+label{display:block;font-size:13px;color:var(--mut);margin:8px 0 3px}
+input,select,textarea{width:100%;padding:12px;font-size:17px;border:1.5px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx)}
+input:focus,select:focus{outline:2px solid var(--blue);border-color:var(--blue)}
+.row{display:flex;gap:8px}.row>div{flex:1;min-width:0}
+button{font:inherit;cursor:pointer}
+.red,.blue{width:100%;border:0;border-radius:12px;padding:15px;font-size:18px;font-weight:700;color:#fff;margin-top:12px}
+.red{background:var(--red)}.blue{background:var(--blue)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid .blue{margin:0;padding:16px 8px;font-size:15px}
+.big{font-size:30px;font-weight:800;color:var(--blue)}
+.mut{color:var(--mut);font-size:14px}
+.w{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;border-radius:10px;margin-bottom:6px;background:var(--bg);border-left:6px solid var(--ok)}
+.w.warn{border-color:#f5a300}.w.bad{border-color:var(--red)}
+.w b{font-size:15px}
+.x{background:none;border:1px solid var(--bd);color:var(--mut);border-radius:8px;padding:4px 10px}
+.it{padding:9px 0;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;gap:8px;align-items:center}
+.bars{display:flex;align-items:flex-end;gap:5px;height:120px;margin-top:8px}
+.bars div{flex:1;background:var(--blue);border-radius:5px 5px 0 0;position:relative;min-height:3px}
+.bars span{position:absolute;top:-17px;left:0;right:0;text-align:center;font-size:11px;color:var(--mut)}
+#toast{position:fixed;left:12px;right:12px;bottom:calc(14px + env(safe-area-inset-bottom,0px));background:var(--blue);color:#fff;padding:13px;border-radius:12px;text-align:center;display:none;z-index:9}
+.tg{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:99px;color:#fff;margin-right:6px;text-transform:uppercase;vertical-align:middle}.tg.I{background:var(--blue)}.tg.R{background:var(--red)}.tg.C{background:#6b7280}.tg.L{background:#b7791f}.tg.A{background:#2e7d6b}
+:root[data-eink]{--red:#000;--blue:#000;--bg:#fff;--card:#fff;--tx:#000;--mut:#222;--bd:#000;--ok:#000}
+:root[data-eink] body{font-size:18px;font-weight:500}
+:root[data-eink] header{background:#fff;color:#000;border-bottom:4px solid #000}
+:root[data-eink] header button{background:#fff;color:#000;border:2px solid #000}
+:root[data-eink] .card{border:2px solid #000;border-radius:6px}
+:root[data-eink] input,:root[data-eink] select,:root[data-eink] textarea{border:2px solid #000;background:#fff;color:#000}
+:root[data-eink] input:focus,:root[data-eink] select:focus{outline:3px solid #000}
+:root[data-eink] .blue{background:#fff;color:#000;border:3px solid #000}
+:root[data-eink] .red{background:#000;color:#fff;border:3px solid #000}
+:root[data-eink] .w{background:#fff;border:2px solid #000;border-left-width:6px}
+:root[data-eink] .w.warn{border-left-width:12px}
+:root[data-eink] .w.bad{border-width:4px;border-left-width:14px}
+:root[data-eink] .w.warn::before{content:"! ";font-weight:900}
+:root[data-eink] .w.bad::before{content:"⚠ ";font-weight:900}
+:root[data-eink] .x{border:2px solid #000;color:#000;background:#fff}
+:root[data-eink] .it{border-bottom:1px solid #000}
+:root[data-eink] #toast{background:#000;color:#fff;outline:3px solid #fff;border:3px solid #000}
+:root[data-eink] .tg{background:#fff;color:#000;border:2px solid #000}
+:root[data-eink] .tg.R{background:#000;color:#fff}
+:root[data-eink] .tg.C{border-style:dashed}
+:root[data-eink] .tg.L{border-style:dotted}
+:root[data-eink] .tg.A{border-style:double;border-width:4px}
+@media print{header,.noprint{display:none!important}body{background:#fff;color:#000}.card{border:1px solid #bbb;break-inside:avoid}}
+textarea{height:110px;font-size:12px}
+</style></head><body>
+<header><h1 id="ht">🏍️ Motor Logboek</h1><button id="back" style="display:none" onclick="go('home')">← Terug</button></header>
+<main id="app"></main><div id="toast"></div>
+<script>
+const K='motorlogboek';let D=null,view='home',pend='';
+try{D=JSON.parse(localStorage.getItem(K))}catch(e){}
+D=D||{bikes:[],sel:null,fuel:[],maint:[],sched:[],tires:[]};D.tires=D.tires||[];
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(D))}catch(e){}};
+const $=s=>document.querySelector(s);
+const num=v=>parseFloat(String(v).replace(',','.'));
+const fm=(n,d=0)=>n.toLocaleString('nl-NL',{minimumFractionDigits:d,maximumFractionDigits:d});
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+const today=()=>new Date().toISOString().slice(0,10);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const bike=()=>D.bikes.find(b=>b.id===D.sel);
+const curKm=id=>Math.max(0,...D.fuel.filter(f=>f.b===id).map(f=>f.km),...D.maint.filter(m=>m.b===id).map(m=>m.km));
+const lastPrice=id=>{const a=D.fuel.filter(f=>f.b===id);return a.length?a[a.length-1].p:''};
+let tt;function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(tt);tt=setTimeout(()=>e.style.display='none',3200)}
+function tanks(id){const a=D.fuel.filter(f=>f.b===id).sort((x,y)=>x.km-y.km);return a.map((f,i)=>i&&f.km>a[i-1].km?{...f,d:f.km-a[i-1].km,c:f.l/(f.km-a[i-1].km)*100}:{...f})}
+const ACT={R:'Vervangen',I:'Controleren',C:'Reinigen',L:'Smeren',A:'Afstellen'};
+const actOpts=Object.entries(ACT).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');
+function warns(id){const k=curKm(id);return D.sched.filter(s=>s.b===id).map(s=>{const last=D.maint.filter(m=>m.b===id&&m.t.toLowerCase()===s.t.toLowerCase()&&(!m.a||!s.a||m.a===s.a||((m.a==='R'||m.a==='A')&&s.a==='I'))).reduce((a,m)=>Math.max(a,m.km),s.start);return{id:s.id,t:s.t,a:s.a,every:s.every,left:last+s.every-k}}).sort((a,b)=>a.left-b.left)}
+function wRow(w,del){const c=w.left<=0?'bad':w.left<=Math.max(500,w.every*.1)?'warn':'';
+ const tg=w.a?`<span class="tg ${w.a}">${ACT[w.a]}</span>`:'';const tx=tg+(w.left<=0?`${esc(w.t)}: ${fm(-w.left)} km over tijd!`:`${esc(w.t)} over ${fm(w.left)} km`);
+ return `<div class="w ${c}"><b>${tx}</b>${del?`<span style="white-space:nowrap"><button class="x" onclick="edit('sched','${w.id}')">✎</button> <button class="x" onclick="del('sched','${w.id}')">${pend==='sched'+w.id?'Zeker?':'✕'}</button></span>`:`<span class="mut">elke ${fm(w.every)}</span>`}</div>`}
+const TPL=[['Brandstofleiding','I',12000],['Gashandvat','I',12000],['Luchtfilter','I',18000],['Carterontluchting','C',6000],['Bougies','I',12000],['Bougies','R',24000],['Kleppenspeling','I',24000],['Motorolie','R',12000],['Oliefilter','R',12000],['Koelvloeistof','I',12000],['Koelvloeistof','R',36000],['Koelsysteem','I',12000],['Secundair luchtsysteem','I',12000],['Ketting','L',1000],['Kettingslider','I',12000],['Remvloeistof','I',6000],['Remvloeistof','R',18000],['Remblokslijtage','I',6000],['Remsysteem','I',12000],['Remlichtschakelaar','I',12000],['Koplampafstelling','I',12000],['Koppeling','I',6000],['Zijstandaard','I',12000],['Vering','I',12000],['Bouten en moeren','I',12000],['Wielen en banden','I',12000],['Balhoofdlager','I',12000]];
+const TPK=[['Motorolie','R',10000],['Oliefilter','R',10000],['Kleppenspeling','I',20000],['Bougies','I',10000],['Bougies','R',20000],['Luchtfilter','R',20000],['Brandstoffilter','R',40000],['Remvloeistof','R',20000],['Koelvloeistof','R',40000],['Cardanolie','R',20000],['Cardanas-vertanding','L',20000],['Versnellingsbakolie','R',40000],['Remblokslijtage','I',10000]];
+const TYPES=[...new Set([...TPL,...TPK].map(x=>x[0])),'Accu','APK / keuring','Anders'];
+const dl=`<datalist id="tp">${TYPES.map(t=>`<option value="${t}">`).join('')}</datalist>`;
+
+const V={
+home(){const b=bike();
+ if(!b)return `<div class="card"><h2>Welkom! Voeg je eerste motor toe</h2><input id="nn" placeholder="Bijv. Honda CB500F"><button class="red" onclick="addBike('nn')">Motor toevoegen</button></div>`;
+ const k=curKm(b.id),w=warns(b.id).slice(0,4);
+ return `${bkBanner()}<div class="card"><label style="margin-top:0">Welke motor?</label>
+ <select onchange="D.sel=this.value;save();render()">${D.bikes.map(m=>`<option value="${m.id}" ${m.id===b.id?'selected':''}>${esc(m.name)}</option>`).join('')}</select>
+ <div class="mut" style="margin-top:10px">Laatst bekende stand</div><div class="big">${k?fm(k)+' km':'– km'}</div></div>
+ <div class="card"><h2>⛽ Tanken</h2>
+ <label style="margin-top:0">Kilometerstand</label><input id="km" inputmode="decimal" placeholder="${k?fm(k):'bijv. 12500'}">
+ <div class="row"><div><label>Liters</label><input id="l" inputmode="decimal" placeholder="0,0" oninput="tot()"></div>
+ <div><label>Prijs per liter (€)</label><input id="p" inputmode="decimal" value="${lastPrice(b.id)?String(lastPrice(b.id)).replace('.',','):''}" placeholder="0,000" oninput="tot()"></div></div>
+ <div class="mut" id="tot" style="margin-top:6px">&nbsp;</div>
+ <button class="red" onclick="saveFuel()">Tanken opslaan</button></div>
+ ${D.sched.some(s=>s.b===b.id)?`<div class="card"><h2>🔧 Onderhoud</h2>${w.map(x=>wRow(x)).join('')}</div>`:''}
+ <div class="grid"><button class="blue" onclick="go('maint')">🔧 Onderhoud toevoegen</button><button class="blue" onclick="go('tires')">🛞 Bandenlog</button><button class="blue" onclick="go('stats')">📊 Statistieken & grafieken</button><button class="blue" onclick="go('more')">⋯ Meer</button></div>`},
+maint(){const b=bike();if(!b)return nobike();
+ return `<div class="card"><h2>🔧 Onderhoud toevoegen</h2>${dl}<div class="mut">${esc(b.name)}</div>
+ <label>Type onderhoud (kies of typ zelf)</label><input id="mt" list="tp" placeholder="Bijv. Motorolie"><label>Wat is er gedaan?</label><select id="ma">${actOpts}</select>
+ <label>Kilometerstand</label><input id="mk" inputmode="decimal" value="${curKm(b.id)||''}">
+ <label>Kosten (€)</label><input id="mc" inputmode="decimal" placeholder="0,00">
+ <button class="red" onclick="saveMaint()">Onderhoud opslaan</button></div>`},
+sched(){const b=bike();if(!b)return nobike();const w=warns(b.id);
+ return `<div class="card"><h2>📅 Onderhoudsschema</h2><div class="mut">${esc(b.name)}</div>${w.length?w.map(x=>EDT&&EDT.k==='sched'&&EDT.id===x.id?schedForm(x.id):wRow(x,1)).join(''):'<p class="mut">Nog geen schema. Voeg hieronder iets toe.</p>'}</div>
+ <div class="card"><h2>Nieuw onderhoud instellen</h2>${dl}
+ <label style="margin-top:0">Type onderhoud</label><input id="st" list="tp" placeholder="Bijv. Motorolie"><label>Actie</label><select id="sa">${actOpts}</select>
+ <label>Elke hoeveel km?</label><input id="se" inputmode="decimal" placeholder="10000">
+ <label>Voor het laatst gedaan bij km (leeg = nu)</label><input id="ss" inputmode="decimal" placeholder="${curKm(b.id)||0}">
+ <button class="red" onclick="saveSched()">Toevoegen aan schema</button></div>`},
+stats(){const b=bike();if(!b)return nobike();const t=tanks(b.id),F=D.fuel.filter(f=>f.b===b.id),M=D.maint.filter(m=>m.b===b.id);
+ const fc=F.reduce((a,f)=>a+f.l*f.p,0),mc=M.reduce((a,m)=>a+m.c,0)+D.tires.filter(t=>t.b===b.id).reduce((a,t)=>a+t.c,0),tl=F.reduce((a,f)=>a+f.l,0);
+ const cs=t.filter(x=>x.c),dist=cs.reduce((a,x)=>a+x.d,0),avg=dist?cs.reduce((a,x)=>a+x.l,0)/dist*100:0;
+ const km=F.length?Math.max(...F.map(f=>f.km))-Math.min(...F.map(f=>f.km)):0;
+ const last=cs.slice(-10),mx=Math.max(1,...last.map(x=>x.c));
+ const fcs=cs.reduce((a,x)=>a+x.l*x.p,0),kmin=F.length?Math.min(...F.map(f=>f.km)):0,mcr=M.filter(m=>m.km>=kmin).reduce((a,m)=>a+m.c,0),ck=curKm(b.id);
+ let tpk=0;['V','A'].forEach(p=>{const TT=D.tires.filter(q=>q.b===b.id&&q.p===p).map(q=>({c:q.c,k:(q.end??ck)-q.start})).filter(q=>q.k>0);const K=TT.reduce((a,q)=>a+q.k,0);if(K>0)tpk+=TT.reduce((a,q)=>a+q.c,0)/K});
+ return `<div class="card"><h2>📊 ${esc(b.name)}</h2>
+ <div class="row"><div><div class="mut">Gem. verbruik</div><div class="big">${avg?fm(avg,1):'–'}</div><div class="mut">L/100 km</div></div>
+ <div><div class="mut">Gem. afstand/liter</div><div class="big">${avg?fm(100/avg,1):'–'}</div><div class="mut">km/L</div></div></div></div>
+ <div class="card"><h2>Verbruik per tankbeurt</h2>${last.length?`<div class="bars" style="margin-top:24px">${last.map(x=>`<div style="height:${x.c/mx*100}%"><span>${fm(x.c,1)}</span></div>`).join('')}</div><div class="mut" style="margin-top:6px">Laatste ${last.length} tankbeurten, L/100 km (uitgaande van vol tanken)</div>`:'<p class="mut">Er zijn minstens twee tankbeurten nodig.</p>'}</div>
+ <div class="card"><h2>Kosten</h2>
+ <div class="it"><span>Brandstof (${fm(tl,1)} L)</span><b>€ ${fm(fc,2)}</b></div>
+ <div class="it"><span>Onderhoud en banden</span><b>€ ${fm(mc,2)}</b></div>
+ <div class="it"><span>Totaal</span><b>€ ${fm(fc+mc,2)}</b></div>
+ <div class="it"><span>Brandstof per km</span><b>${dist?'€ '+fm(fcs/dist,3):'–'}</b></div>
+ <div class="it"><span>Onderhoud per km</span><b>${km?'€ '+fm(mcr/km,3):'–'}</b></div>
+ <div class="it"><span>Banden per km</span><b>${tpk?'€ '+fm(tpk,3):'–'}</b></div>
+ <div class="it"><b>Totaal per gereden km</b><b>${dist?'€ '+fm(fcs/dist+(km?mcr/km:0)+tpk,3):'–'}</b></div>
+ <div class="mut" style="margin-top:6px">Brandstof en onderhoud tellen alleen mee voor de kilometers die je in de app bijhoudt. Banden worden gedeeld door de kilometers die ze hebben gereden, ook van vóór je begon met bijhouden.</div></div>`},
+hist(){const b=bike();if(!b)return nobike();
+ const a=[...D.fuel.filter(f=>f.b===b.id).map(f=>({k:'fuel',id:f.id,d:f.d,km:f.km,t:`⛽ ${fm(f.l,2)} L à € ${fm(f.p,3)}`,c:f.l*f.p})),
+ ...D.maint.filter(m=>m.b===b.id).map(m=>({k:'maint',id:m.id,d:m.d,km:m.km,t:'🔧 '+esc(m.t)+(m.a?' · '+ACT[m.a].toLowerCase():''),c:m.c}))].sort((x,y)=>y.km-x.km||y.d.localeCompare(x.d));
+ return `<div class="card"><h2>📋 Geschiedenis: ${esc(b.name)}</h2>${a.length?a.map(x=>EDT&&EDT.k===x.k&&EDT.id===x.id?editForm(x.k,x.id):`<div class="it"><div><b>${x.t}</b><div class="mut">${x.d} · ${fm(x.km)} km · € ${fm(x.c,2)}</div></div><div style="display:flex;gap:6px"><button class="x" onclick="edit('${x.k}','${x.id}')">✎</button><button class="x" onclick="del('${x.k}','${x.id}')">${pend===x.k+x.id?'Zeker?':'✕'}</button></div></div>`).join(''):'<p class="mut">Nog niets ingevoerd.</p>'}</div>`},
+tires(){const b=bike();if(!b)return nobike();const k=curKm(b.id);
+ const T=D.tires.filter(t=>t.b===b.id).map(t=>({...t,km:(t.end??k)-t.start}));
+ const A=T.filter(t=>t.end==null),O=T.filter(t=>t.end!=null).sort((x,y)=>y.km-x.km);
+ const row=(t,act)=>EDT&&EDT.k==='tire'&&EDT.id===t.id?tireForm(t.id):`<div class="it" style="display:block"><div style="display:flex;justify-content:space-between;align-items:center"><b>${esc(t.n)} <span class="tg ${t.p==='V'?'I':'R'}">${t.p==='V'?'Voor':'Achter'}</span></b><span style="white-space:nowrap"><button class="x" onclick="edit('tire','${t.id}')">✎</button> <button class="x" onclick="del('tire','${t.id}')">${pend==='tire'+t.id?'Zeker?':'✕'}</button></span></div>
+ <div class="mut">Erop bij ${fm(t.start)} km${t.end!=null?', eraf bij '+fm(t.end)+' km':''} · € ${fm(t.c,2)}</div>
+ <div class="big" style="font-size:22px">${fm(t.km)} km${act?' <span class="mut">(nog actief)</span>':''}</div>
+ ${t.km>0&&t.c>0?`<div class="mut">€ ${fm(t.c/t.km*1000,0)} per 1.000 km</div>`:''}
+ ${act?`<div class="row" style="margin-top:8px"><div><input id="e${t.id}" inputmode="decimal" value="${k}"></div><div><button class="blue" style="margin:0;padding:12px;font-size:15px" onclick="endTire('${t.id}')">Afmonteren bij km</button></div></div>`:''}</div>`;
+ return `<div class="card"><h2>🛞 Banden nu: ${esc(b.name)}</h2>${A.length?A.map(t=>row(t,1)).join(''):'<p class="mut">Geen actieve banden.</p>'}</div>
+ ${O.length?`<div class="card"><h2>Eerder gemonteerd (langste bovenaan)</h2>${O.map(t=>row(t,0)).join('')}</div>`:''}
+ <div class="card"><h2>Nieuwe band monteren</h2><label style="margin-top:0">Merk en type</label><input id="tn" placeholder="Bijv. Michelin Road 6">
+ <div class="row"><div><label>Positie</label><select id="tpos"><option value="V">Voor</option><option value="A">Achter</option></select></div><div><label>Kilometerstand</label><input id="ts" inputmode="decimal" value="${k||''}"></div></div>
+ <label>Prijs (€)</label><input id="tcost" inputmode="decimal" placeholder="0,00">
+ <div class="mut" style="margin-top:6px">Een actieve band op dezelfde positie wordt automatisch afgemonteerd.</div>
+ <button class="red" onclick="addTire()">Band opslaan</button></div>`},
+more(){return `<div class="grid" style="grid-template-columns:1fr">
+ <button class="blue" onclick="go('overview')">🧾 Onderhoudsoverzicht (voor verkoop)</button>
+ <button class="blue" onclick="go('sched')">📅 Onderhoudsschema</button>
+ <button class="blue" onclick="go('hist')">📋 Geschiedenis (tanken en onderhoud)</button>
+ <button class="blue" onclick="go('bikes')">🏍️ Mijn motoren</button>
+ <button class="blue" onclick="go('backup')">💾 Back-up</button>
+ <button class="blue" onclick="toggleEink()">${EINK?'🎨 Terug naar kleur':'⬛ E-ink-weergave (zwart-wit)'}</button></div>`},
+overview(){const b=bike();if(!b)return nobike();const L=ovList(b.id),tot=L.reduce((a,x)=>a+x.c,0);
+ const G=[...new Set(L.map(x=>x.km))].sort((x,y)=>y-x);
+ return `<div class="card"><h2>🧾 Onderhoudshistorie: ${esc(b.name)}</h2><div class="mut">Kilometerstand ${fm(curKm(b.id))} km · ${L.length} werkzaamheden · totaal € ${fm(tot,2)}</div></div>
+ ${G.map(km=>{const d=L.find(x=>x.km===km&&x.d)?.d;return `<div class="card"><div class="big" style="font-size:20px">${fm(km)} km <span class="mut" style="font-size:14px;font-weight:400">${d?dt(d):''}</span></div>${L.filter(x=>x.km===km).map(x=>`<div class="it"><span>${x.a?`<span class="tg ${x.a}">${ACT[x.a]}</span>`:''}${esc(x.t)}${x.n?' <span class="mut">(bij aankoop)</span>':''}</span><span class="mut">${x.c?'€ '+fm(x.c,2):''}</span></div>`).join('')}</div>`}).join('')||'<div class="card"><p class="mut">Nog geen onderhoud ingevoerd.</p></div>'}
+ <div class="card noprint"><h2>Delen met een koper</h2><textarea id="ovt" readonly>${esc(ovText(b))}</textarea>
+ <button class="blue" onclick="cp('ovt')">Kopieer als tekst</button><button class="blue" style="margin-top:8px" onclick="window.print()">🖨️ Afdrukken / opslaan als PDF</button></div>`},
+bikes(){return `<div class="card"><h2>🏍️ Mijn motoren</h2>${D.bikes.map(m=>`<div class="it"><b>${esc(m.name)}</b><button class="x" onclick="del('bike','${m.id}')">${pend==='bike'+m.id?'Verwijder alles?':'✕'}</button></div>`).join('')||'<p class="mut">Nog geen motoren.</p>'}</div>
+ <div class="card"><h2>Motor toevoegen</h2><input id="nn" placeholder="Bijv. Honda Africa Twin"><button class="red" onclick="addBike('nn')">Toevoegen</button></div>`},
+backup(){return `<div class="card"><h2>💾 Back-up</h2><p class="mut">Je gegevens staan alleen op dit apparaat. Kopieer de tekst hieronder en bewaar die (bijv. in een notitie of mail).</p>
+ <textarea id="ex" readonly>${esc(JSON.stringify(D))}</textarea><button class="red" onclick="shareBk()">📤 Deel back-up (stuur naar jezelf)</button><button class="blue" onclick="cp()">Kopieer back-up</button></div>
+ <div class="card"><h2>Terugzetten</h2><textarea id="im" placeholder="Plak hier je back-up"></textarea><label>Of kies een back-upbestand</label><input type="file" accept=".json,application/json,text/plain" onchange="impFile(this)"><button class="red" onclick="imp()">Terugzetten</button></div>`}
+};
+const nobike=()=>`<div class="card"><p>Voeg eerst een motor toe.</p><button class="red" onclick="go('bikes')">Naar mijn motoren</button></div>`;
+const PARENT={overview:'more',sched:'more',hist:'more',bikes:'more',backup:'more'};
+const dt=d=>d.split('-').reverse().join('-');let EDT=null;
+function ovList(id){const L=D.maint.filter(m=>m.b===id).map(m=>({km:m.km,d:m.d,t:m.t,a:m.a,c:m.c}));
+ D.tires.filter(t=>t.b===id).forEach(t=>{L.push({km:t.start,t:'Band '+(t.p==='V'?'voor':'achter')+' gemonteerd: '+t.n,c:t.c});if(t.end!=null)L.push({km:t.end,t:'Band '+(t.p==='V'?'voor':'achter')+' afgemonteerd: '+t.n+' ('+fm(t.end-t.start)+' km gereden)',c:0})});
+ D.sched.filter(x=>x.b===id&&real(x)&&x.start>0&&!D.maint.some(m=>m.b===id&&m.t===x.t&&m.km===x.start)).forEach(x=>L.push({km:x.start,t:x.t,a:x.a,c:0,n:1}));return L}
+const real=x=>x.m===1||(x.m===undefined&&x.tp===undefined&&!(TPL.concat(TPK).some(q=>q[0]===x.t&&q[1]===x.a&&q[2]===x.every)&&x.start%x.every===0))
+function ovText(b){const L=ovList(b.id);let t=`ONDERHOUDSHISTORIE ${b.name}\nKilometerstand: ${fm(curKm(b.id))} km\n`;
+ [...new Set(L.map(x=>x.km))].sort((x,y)=>y-x).forEach(km=>{const d=L.find(x=>x.km===km&&x.d)?.d;t+=`\n${fm(km)} km${d?' ('+dt(d)+')':''}\n`;L.filter(x=>x.km===km).forEach(x=>{t+=`- ${x.a?ACT[x.a]+': ':''}${x.t}${x.n?' (bij aankoop)':''}${x.c?' (€ '+fm(x.c,2)+')':''}\n`})});
+ return t+`\nTotaal onderhoudskosten: € ${fm(L.reduce((a,x)=>a+x.c,0),2)}`}
+const NAMES={more:'Meer',overview:'Onderhoudsoverzicht',tires:'Bandenlog',home:'🏍️ Motor Logboek',maint:'Onderhoud',sched:'Schema',stats:'Statistieken',hist:'Geschiedenis',bikes:'Motoren',backup:'Back-up'};
+function render(){pend=pend;$('#app').innerHTML=V[view]();$('#ht').textContent=NAMES[view];$('#back').style.display=view==='home'?'none':'block';$('#back').onclick=()=>go(PARENT[view]||'home')}
+function go(v){view=v;pend='';EDT=null;render();scrollTo(0,0)}
+function tot(){const l=num($('#l').value),p=num($('#p').value);$('#tot').innerHTML=l>0&&p>0?`Totaal: <b>€ ${fm(l*p,2)}</b>`:'&nbsp;'}
+function addBike(id){const n=$('#'+id).value.trim();if(!n)return toast('Vul een naam in');const m={id:uid(),name:n};D.bikes.push(m);D.sel=m.id;save();toast('Motor toegevoegd');view==='bikes'?render():go('home')}
+function saveFuel(){const b=bike(),km=num($('#km').value),l=num($('#l').value),p=num($('#p').value);
+ if(!(km>0&&l>0&&p>0))return toast('Vul kilometerstand, liters en literprijs in');
+ const last=curKm(b.id);if(km<last)return toast('Kilometerstand is lager dan de laatste stand ('+fm(last)+' km)');
+ D.fuel.push({id:uid(),b:b.id,km,l,p,d:today()});save();render();
+ const t=tanks(b.id).find(x=>x.km===km&&x.c);const w=warns(b.id).filter(x=>x.left<=Math.max(500,x.every*.1))[0];
+ toast('Opgeslagen: € '+fm(l*p,2)+(t?' · '+fm(t.c,1)+' L/100 km':'')+(w?' · ⚠️ '+w.t+(w.left<=0?' is te laat':' over '+fm(w.left)+' km'):''))}
+function saveMaint(){const b=bike(),t=$('#mt').value.trim(),km=num($('#mk').value),c=num($('#mc').value)||0;
+ if(!t||!(km>0))return toast('Vul type en kilometerstand in');
+ D.maint.push({id:uid(),b:b.id,t,a:$('#ma').value,km,c,d:today()});save();toast('Onderhoud opgeslagen');go('home')}
+function saveSched(){const b=bike(),t=$('#st').value.trim(),e=num($('#se').value),s=$('#ss').value?num($('#ss').value):curKm(b.id);
+ if(!t||!(e>0))return toast('Vul type en aantal km in');
+ D.sched.push({id:uid(),b:b.id,t,a:$('#sa').value,every:e,start:s,m:$('#ss').value?1:0});save();toast('Toegevoegd aan schema');render()}
+function del(k,id){if(pend!==k+id){pend=k+id;render();return}pend='';
+ if(k==='bike'){D.bikes=D.bikes.filter(m=>m.id!==id);['fuel','maint','sched','tires'].forEach(x=>D[x]=D[x].filter(r=>r.b!==id));if(D.sel===id)D.sel=D.bikes[0]?.id||null}
+ else{const n={fuel:'fuel',maint:'maint',tire:'tires'}[k]||'sched';D[n]=D[n].filter(r=>r.id!==id)}
+ save();render()}
+function addTire(){const b=bike(),n=$('#tn').value.trim(),p=$('#tpos').value,s=num($('#ts').value),c=num($('#tcost').value)||0;
+ if(!n||!(s>=0))return toast('Vul merk en kilometerstand in');
+ D.tires.forEach(t=>{if(t.b===b.id&&t.p===p&&t.end==null)t.end=Math.max(s,t.start)});
+ D.tires.push({id:uid(),b:b.id,n,p,start:s,end:null,c});save();toast('Band opgeslagen');render()}
+function endTire(id){const t=D.tires.find(x=>x.id===id),e=num($('#e'+id).value);if(!(e>=t.start))return toast('Vul een geldige kilometerstand in');t.end=e;save();toast(fm(e-t.start)+' km gereden op deze band');render()}
+function loadTpl(list=TPL,done=[],dk=0){const b=bike();if(!b)return;
+ done.forEach(([t,a,c])=>{if(!D.maint.some(m=>m.b===b.id&&m.t===t&&m.a===a&&m.km===dk))D.maint.push({id:uid(),b:b.id,t,a,km:dk,c,d:today()})});
+ const k=curKm(b.id);let n=0;list.forEach(([t,a,e])=>{if(!D.sched.some(x=>x.b===b.id&&x.t===t&&x.a===a)){D.sched.push({id:uid(),b:b.id,t,a,every:e,start:Math.floor(k/e)*e,tp:1});n++}});
+ save();toast(n+' onderdelen aan het schema toegevoegd'+(done.length?' en de beurt ingevoerd':''));render()}
+function loadK75(){loadTpl(TPK,[['Cardanolie','R',0],['Cardanas-vertanding','L',0],['Remvloeistof','R',0],['Koelvloeistof','R',0],['Motorolie','R',0],['Kleppenspeling','A',0],['Bougies','I',0]],136000)}
+function edit(k,id){EDT={k,id};pend='';render()}
+function editForm(k,id){const r=D[k].find(x=>x.id===id),f=k==='fuel',v=n=>String(n).replace('.',',');
+ return `<div class="it" style="display:block;background:var(--bg);padding:10px;border-radius:10px;margin:6px 0">
+ ${f?'':`${dl}<label style="margin-top:0">Type</label><input id="et" list="tp" value="${esc(r.t)}"><label>Actie</label><select id="ea">${(r.a?'':'<option value="" selected>–</option>')+actOpts.replace(`value="${r.a}"`,`value="${r.a}" selected`)}</select>`}
+ <label${f?' style="margin-top:0"':''}>Kilometerstand</label><input id="ek" inputmode="decimal" value="${r.km}">
+ ${f?`<div class="row"><div><label>Liters</label><input id="el" inputmode="decimal" value="${v(r.l)}"></div><div><label>Prijs per liter</label><input id="ep" inputmode="decimal" value="${v(r.p)}"></div></div>`:`<label>Kosten (€)</label><input id="ec" inputmode="decimal" value="${v(r.c)}">`}
+ <label>Datum</label><input id="edate" type="date" value="${r.d||''}">
+ <div class="row"><div><button class="red" onclick="saveEdit('${k}','${id}')">Opslaan</button></div><div><button class="blue" onclick="EDT=null;render()">Annuleren</button></div></div></div>`}
+function saveEdit(k,id){const r=D[k].find(x=>x.id===id),km=num($('#ek').value),d=$('#edate').value||r.d;
+ if(!(km>0))return toast('Vul een geldige kilometerstand in');
+ if(k==='fuel'){const l=num($('#el').value),p=num($('#ep').value);if(!(l>0&&p>0))return toast('Vul liters en prijs in');Object.assign(r,{km,l,p,d})}
+ else{const t=$('#et').value.trim();if(!t)return toast('Vul het type in');Object.assign(r,{t,a:$('#ea').value,km,c:num($('#ec').value)||0,d})}
+ EDT=null;save();toast('Aangepast');render()}
+let EINK=false;try{EINK=localStorage.getItem('ml_eink')==='1'}catch(e){}
+function applyTheme(){const e=document.documentElement;if(EINK){e.setAttribute('data-eink','');e.setAttribute('data-theme','light')}else{e.removeAttribute('data-eink');e.removeAttribute('data-theme')}}
+function toggleEink(){EINK=!EINK;try{localStorage.setItem('ml_eink',EINK?'1':'0')}catch(e){}applyTheme();render()}
+const BOX='<div class="it" style="display:block;background:var(--bg);padding:10px;border-radius:10px;margin:6px 0">';
+function tireForm(id){const r=D.tires.find(x=>x.id===id),v=n=>String(n).replace('.',',');
+ return `${BOX}<label style="margin-top:0">Merk en type</label><input id="tn2" value="${esc(r.n)}">
+ <div class="row"><div><label>Positie</label><select id="tp2"><option value="V" ${r.p==='V'?'selected':''}>Voor</option><option value="A" ${r.p==='A'?'selected':''}>Achter</option></select></div><div><label>Prijs (€)</label><input id="tc2" inputmode="decimal" value="${v(r.c)}"></div></div>
+ <div class="row"><div><label>Erop bij km</label><input id="ts2" inputmode="decimal" value="${r.start}"></div><div><label>Eraf bij km (leeg = actief)</label><input id="te2" inputmode="decimal" value="${r.end??''}"></div></div>
+ <div class="row" style="margin-top:6px"><div><button class="red" onclick="saveTire('${id}')">Opslaan</button></div><div><button class="blue" onclick="EDT=null;render()">Annuleren</button></div></div></div>`}
+function saveTire(id){const r=D.tires.find(x=>x.id===id),n=$('#tn2').value.trim(),s=num($('#ts2').value),e=$('#te2').value.trim()===''?null:num($('#te2').value);
+ if(!n||!(s>=0)||(e!==null&&!(e>=s)))return toast('Controleer de gegevens (eraf-stand moet hoger zijn dan erop-stand)');
+ Object.assign(r,{n,p:$('#tp2').value,c:num($('#tc2').value)||0,start:s,end:e});EDT=null;save();toast('Aangepast');render()}
+function schedForm(id){const r=D.sched.find(x=>x.id===id);
+ return `${BOX}<label style="margin-top:0">Type</label><input id="xt" list="tp" value="${esc(r.t)}"><label>Actie</label><select id="xa">${(r.a?'':'<option value="" selected>–</option>')+actOpts.replace(`value="${r.a}"`,`value="${r.a}" selected`)}</select>
+ <label>Elke hoeveel km?</label><input id="xe" inputmode="decimal" value="${r.every}"><label>Voor het laatst gedaan bij km</label><input id="xs" inputmode="decimal" value="${r.start}">
+ <div class="row" style="margin-top:6px"><div><button class="red" onclick="saveSchedEdit('${id}')">Opslaan</button></div><div><button class="blue" onclick="EDT=null;render()">Annuleren</button></div></div></div>`}
+function saveSchedEdit(id){const r=D.sched.find(x=>x.id===id),t=$('#xt').value.trim(),e=num($('#xe').value),s=num($('#xs').value);
+ if(!t||!(e>0)||!(s>=0))return toast('Vul type, interval en kilometerstand in');
+ if(s!==r.start)r.m=1;Object.assign(r,{t,a:$('#xa').value,every:e,start:s});EDT=null;save();toast('Aangepast');render()}
+let LB=0;try{LB=+localStorage.getItem('ml_lb')||0}catch(e){}
+function mark(){LB=Date.now();try{localStorage.setItem('ml_lb',LB)}catch(e){}}
+function bkBanner(){if(!(D.fuel.length+D.maint.length>0&&(!LB||Date.now()-LB>14*864e5)))return'';
+ return `<div class="card" style="border:2px solid var(--red)"><b>💾 ${LB?'Laatste back-up '+Math.floor((Date.now()-LB)/864e5)+' dagen geleden':'Je hebt nog geen back-up gemaakt'}</b><button class="blue" style="margin-top:8px" onclick="go('backup')">Nu back-up maken</button></div>`}
+async function shareBk(){const t=JSON.stringify(D),n='motorlogboek-backup-'+today()+'.json';
+ try{const f=new File([t],n,{type:'application/json'});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'Motor Logboek back-up'});mark();return toast('Back-up gedeeld')}}catch(e){if(e&&e.name==='AbortError')return}
+ try{if(navigator.share){await navigator.share({title:'Motor Logboek back-up',text:t});mark();return toast('Back-up gedeeld')}}catch(e){if(e&&e.name==='AbortError')return}
+ cp()}
+function impFile(i){const f=i.files[0];if(!f)return;f.text().then(t=>{$('#im').value=t;toast('Bestand gelezen. Druk op Terugzetten.')})}
+function cp(id='ex'){if(id==='ex')mark();const e=$('#'+id);e.select();try{navigator.clipboard.writeText(e.value);toast('Gekopieerd')}catch(x){try{document.execCommand('copy');toast('Gekopieerd')}catch(y){toast('Kopieer de tekst handmatig')}}}
+function imp(){try{const d=JSON.parse($('#im').value);if(!d.bikes||!d.fuel)throw 0;D=d;D.tires=D.tires||[];D.sched=D.sched||[];D.maint=D.maint||[];save();mark();toast('Teruggezet');go('home')}catch(e){toast('Dit is geen geldige back-up')}}
+if(!D.sel&&D.bikes[0])D.sel=D.bikes[0].id;applyTheme();
+render();
+</script></body></html>
